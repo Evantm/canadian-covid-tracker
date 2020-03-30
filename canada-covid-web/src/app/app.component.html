@@ -1,0 +1,54 @@
+<div class="top-bar col-12">
+
+  <div class="row">
+    <div class="col-6 text-left">
+      <fa-icon [icon]="faCanadianMapleLeaf"></fa-icon> Canada Covid Tracker v.1.0
+    </div>
+    <div class="col-6 text-right">
+      <fa-icon [icon]="faGithub"></fa-icon>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Main header -->
+
+  <div class="header-disclaimer">
+    <h1 class="">Canadian COVID-19 Tracker</h1>
+
+    <hr>
+
+    <div class="disclaimer {{ this.disclaimer_hidden_status }}">
+      <div class="col-12 text-right"> <button (click)="hideDisclaimer()" class="btn btn-nostyle"> <fa-icon [icon]='faTimesCircle'></fa-icon> </button></div>
+      <small class="lead">Welcome to my implementation of a simple COVID-19 tracker. While the federal government has put together <a href="https://www.canada.ca/en/public-health/services/diseases/2019-novel-coronavirus-infection/health-professionals/epidemiological-summary-covid-19-cases.html">a very concise and high quality web page</a> for the same purpose, provincial governments have each done their own thing. This inconsistency makes comparison difficult and so the purpose of this web page is to unify that information into one central location. </small>
+    </div>
+
+  </div>
+
+  
+
+  <!-- Content picker -->
+
+  <div class="col-12">
+    <h3>See Data for:</h3>
+    <div class="btn-group">
+      <button (click)="showData('CA')" class="btn btn-primary {{ isActive('CA') }}">Canada</button>
+      <button (click)="showData('BC')" class="btn btn-primary {{ isActive('BC') }}">BC</button>
+      <button (click)="showData('AB')" class="btn btn-primary {{ isActive('AB') }}">AB</button>
+      <button (click)="showData('SA')" class="btn btn-primary {{ isActive('SA') }}">SA</button>
+      <button (click)="showData('MA')" class="btn btn-primary {{ isActive('MA') }}">MA</button>
+      <button (click)="showData('ON')" class="btn btn-primary {{ isActive('ON') }}">ON</button>
+      <button (click)="showData('QC')" class="btn btn-primary {{ isActive('QC') }}">QC</button>
+      <button (click)="showData('NL')" class="btn btn-primary {{ isActive('NL') }}">NL</button>
+      <button (click)="showData('PE')" class="btn btn-primary {{ isActive('PE') }}">PE</button>
+      <button (click)="showData('NS')" class="btn btn-primary {{ isActive('NS') }}">NS</button>
+      <button (click)="showData('NB')" class="btn btn-primary {{ isActive('NB') }}">NB</button>
+      <button (click)="showData('YT')" class="btn btn-primary {{ isActive('YT') }}">YT</button>
+      <button (click)="showData('NT')" class="btn btn-primary {{ isActive('NT') }}">NT</button>
+      <button (click)="showData('NU')" class="btn btn-primary {{ isActive('NU') }}">NU</button>
+    </div>
+  </div>
+
+
+</div>
