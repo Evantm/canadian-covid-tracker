@@ -223,7 +223,8 @@ def getDataFromProvinceSpecificSites():
                 'percenttoday': current_line_data[9],
                 'numtested': current_line_data[10]
             }   
-        
+    
+    data["last-update"] = formatted_date
     result = json.dumps(data)
 
     writeable = open("covid-19.json", "w")
