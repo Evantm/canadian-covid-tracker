@@ -226,7 +226,7 @@ def getDataFromProvinceSpecificSites():
                 'numtested': current_line_data[10]
             }   
     
-    data["last-update"] = formatted_date
+    data["lastUpdate"] = formatted_date
     result = json.dumps(data)
 
     writeable = open(path + "/covid-19.json", "w")
