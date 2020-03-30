@@ -9,7 +9,7 @@ def getDataFromProvinceSpecificSites():
     
     # Get the data from the well hidden gov't location
     dataLocation = "https://health-infobase.canada.ca/src/data/covidLive/covid19.csv"
-    # os.system("curl " + dataLocation + " > tmp/currentdata.csv" )
+    os.system("curl " + dataLocation + " > tmp/currentdata.csv" )
 
     # Process the CSV
     dataFile = open("./tmp/currentdata.csv")
