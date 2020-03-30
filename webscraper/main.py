@@ -229,7 +229,7 @@ def getDataFromProvinceSpecificSites():
     data["last-update"] = formatted_date
     result = json.dumps(data)
 
-    writeable = open(path + "covid-19.json", "w")
+    writeable = open(path + "/covid-19.json", "w")
     writeable.write(result)
 
     dataFile.close()
