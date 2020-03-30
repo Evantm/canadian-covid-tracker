@@ -9,10 +9,12 @@ def getDataFromProvinceSpecificSites():
     
     # Get the data from the well hidden gov't location
     dataLocation = "https://health-infobase.canada.ca/src/data/covidLive/covid19.csv"
-    os.system("curl " + dataLocation + " > tmp/currentdata.csv" )
+    path = os.path.dirname(os.path.abspath(__file__))
+    
+    os.system("curl " + dataLocation + " > " + path + "/tmp/currentdata.csv" )
 
     # Process the CSV
-    dataFile = open("./tmp/currentdata.csv")
+    dataFile = open(path + "/tmp/currentdata.csv")
     rows = dataFile.readline().strip().split(',')
 
     prov_codes = {"1": "Canada", "10" : "NL", "11": "PE", "12": "NS", "13": "NB", "24": "QC", "35": "ON", "46": "MA", "47": "SA", "48": "AB", "59": "BC", "60": "YT", "61" : "NT", "62": "NU"}
@@ -227,7 +229,7 @@ def getDataFromProvinceSpecificSites():
     data["last-update"] = formatted_date
     result = json.dumps(data)
 
-    writeable = open("covid-19.json", "w")
+    writeable = open(path + "covid-19.json", "w")
     writeable.write(result)
 
     dataFile.close()
