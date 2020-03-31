@@ -1,11 +1,18 @@
-<div class="top-bar col-12">
+<header>
+  <script src="node_modules/chart.js/Chart.min.js"></script>
+  <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
 
-  <div class="row">
-    <div class="col-6 text-left">
-      <fa-icon [icon]="faCanadianMapleLeaf"></fa-icon> Canada Covid Tracker v.1.0
-    </div>
-    <div class="col-6 text-right">
-      <fa-icon [icon]="faGithub"></fa-icon>
+</header>
+
+<div class="top-bar col-12">
+  <div class="container">
+    <div class="row">
+      <div class="col-6 text-left">
+        <fa-icon [icon]="faCanadianMapleLeaf"></fa-icon> Canada Covid Tracker v.1.0
+      </div>
+      <div class="col-6 text-right">
+        <fa-icon [icon]="faGithub"></fa-icon>
+      </div>
     </div>
   </div>
 </div>
@@ -22,6 +29,9 @@
     <div class="disclaimer {{ this.disclaimer_hidden_status }}">
       <div class="col-12 text-right"> <button (click)="hideDisclaimer()" class="btn btn-nostyle"> <fa-icon [icon]='faTimesCircle'></fa-icon> </button></div>
       <small class="lead">Welcome to my implementation of a simple COVID-19 tracker. While the federal government has put together <a href="https://www.canada.ca/en/public-health/services/diseases/2019-novel-coronavirus-infection/health-professionals/epidemiological-summary-covid-19-cases.html">a very concise and high quality web page</a> for the same purpose, provincial governments have each done their own thing. This inconsistency makes comparison difficult and so the purpose of this web page is to unify that information into one central location. </small>
+      <hr>
+      <small class="lead">Stay safe and inside!</small>
+
     </div>
 
   </div>
@@ -50,5 +60,16 @@
     </div>
   </div>
 
+  <div class="chart-wrapper">
+      <canvas baseChart width="200" height="100"
+        [datasets]="chartData"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [colors]="chartColors"
+        [legend]="chartLegend"
+        [chartType]="chartType"
+        [plugins]="chartPlugins">
+      </canvas>
+    </div>
 
 </div>

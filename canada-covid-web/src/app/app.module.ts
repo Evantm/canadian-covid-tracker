@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 // Icons 
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
+// Charts
+import { ChartsModule } from "ng2-charts";
+
 
 @NgModule({
   declarations: [
@@ -15,7 +18,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
