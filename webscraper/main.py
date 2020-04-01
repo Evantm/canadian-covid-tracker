@@ -1,242 +1,113 @@
 import os, csv, json
 from datetime import date
+import requests
+from copy import deepcopy
 
 def getDataFromProvinceSpecificSites():
 
     today = date.today()
     formatted_date = today.strftime("%d-%m-%Y")
-    print(formatted_date)
-    
+    formatted_date = "31-03-2020"
     # Get the data from the well hidden gov't location
-    dataLocation = "https://health-infobase.canada.ca/src/data/covidLive/covid19.csv"
-    path = os.path.dirname(os.path.abspath(__file__))
-    
-    os.system("curl " + dataLocation + " > " + path + "/tmp/currentdata.csv" )
+    SECRET_URL = "https://health-infobase.canada.ca/src/data/covidLive/covid19.csv"
 
-    # Process the CSV
-    dataFile = open(path + "/tmp/currentdata.csv")
-    rows = dataFile.readline().strip().split(',')
+    with requests.get(SECRET_URL,stream=True) as csv_contents:
+        lines = (line.decode('utf-8') for line in csv_contents.iter_lines())
 
-    prov_codes = {"1": "Canada", "10" : "NL", "11": "PE", "12": "NS", "13": "NB", "24": "QC", "35": "ON", "46": "MA", "47": "SA", "48": "AB", "59": "BC", "60": "YT", "61" : "NT", "62": "NU"}
-
-    print(rows)
-
-    data = {
-        "Canada": {
-            'conf': 0,
-            'prob': 0,
-            'deaths': 0,
-            'total': 0,
-            'today': 0,
-            'percenttoday': 0,
-            'numtested': 0,
-            'daily': {}
-        },
-        "PROVS":{
-
-            "BC": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-
-            },
-            "AB": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "SA": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "MA": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "ON": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "QC": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "NL": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "PE": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "NS": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "NB": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "YT": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "NT": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
-            },
-            "NU": {
-                'conf': 0,
-                'prob': 0,
-                'deaths': 0,
-                'total': 0,
-                'today': 0,
-                'percenttoday': 0,
-                'numtested': 0,
-                'daily': {}
+        prov_codes = {
+            "10" : "NL", 
+            "11": "PE", 
+            "12": "NS", 
+            "13": "NB", 
+            "24": "QC", 
+            "35": "ON", 
+            "46": "MA", 
+            "47": "SA", 
+            "48": "AB", 
+            "59": "BC", 
+            "60": "YT", 
+            "61" : "NT", 
+            "62": "NU"
             }
-        }
-    }
 
-    tempInd = 0
-    for line in dataFile:
-        current_line_data = line.strip().split(',')
-    
-        if(current_line_data[0] not in prov_codes):
-            continue
 
-        print(current_line_data)
-        print(tempInd)
-        tempInd = tempInd + 1
 
-        if(current_line_data[0] == "1"):
-            # Represents all of Canada 
-            if(current_line_data[3] == formatted_date):
-                data["Canada"] = {
-                    'conf': current_line_data[4],
-                    'prob': current_line_data[5],
-                    'deaths': current_line_data[6],
-                    'total': current_line_data[7],
-                    'today': current_line_data[8],
-                    'percenttoday': current_line_data[9],
-                    'numtested': current_line_data[10],
-                    'daily': data["Canada"]["daily"]
+        default_entry = {
+                    'conf': 0,
+                    'prob': 0,
+                    'deaths': 0,
+                    'total': 0,
+                    'today': 0,
+                    'percenttoday': 0,
+                    'numtested': 0,
+                    'daily': {}
                 }
 
-            data["Canada"]["daily"][current_line_data[3]] = {
-                'conf': current_line_data[4],
-                'prob': current_line_data[5],
-                'deaths': current_line_data[6],
-                'total': current_line_data[7],
-                'today': current_line_data[8],
-                'percenttoday': current_line_data[9],
-                'numtested': current_line_data[10]
-            }
-        else:
-            # Represents a province
-            if(current_line_data[3] == formatted_date):
-                data["PROVS"][prov_codes[current_line_data[0]]] = {
-                    'conf': current_line_data[4],
-                    'prob': current_line_data[5],
-                    'deaths': current_line_data[6],
-                    'total': current_line_data[7],
-                    'today': current_line_data[8],
-                    'percenttoday': current_line_data[9],
-                    'numtested': current_line_data[10],
-                    'daily': data["PROVS"][prov_codes[current_line_data[0]]]["daily"]
-                }
-            print("writing to daily")
-            data["PROVS"][prov_codes[current_line_data[0]]]["daily"][current_line_data[3]] = {
-                'conf': current_line_data[4],
-                'prob': current_line_data[5],
-                'deaths': current_line_data[6],
-                'total': current_line_data[7],
-                'today': current_line_data[8],
-                'percenttoday': current_line_data[9],
-                'numtested': current_line_data[10]
-            }   
-    
-    data["lastUpdate"] = formatted_date
-    result = json.dumps(data)
+        data = {"Canada": deepcopy(default_entry), "PROVS": {}}
+        for val in prov_codes.values():
+            data["PROVS"][val] = deepcopy(default_entry)
 
-    writeable = open(path + "/covid-19.json", "w")
-    writeable.write(result)
+        next(lines) # remove header
 
-    dataFile.close()
-    writeable.close()
-
-    print("Done")
+        for line in csv.reader(lines):
 
 
-getDataFromProvinceSpecificSites()
+
+            if(line[0] not in prov_codes): #Canada is not a province
+                # Represents all of Canada 
+
+                if(line[3] == formatted_date):
+
+                    data["Canada"] = {
+                        'conf': line[4],
+                        'prob': line[5],
+                        'deaths': line[6],
+                        'total': line[7],
+                        'today': line[8],
+                        'percenttoday': line[9],
+                        'numtested': line[10],
+                        'daily': data["Canada"]["daily"]
+                        }
+
+                data["Canada"]["daily"][line[3]] = {
+                    'conf': line[4],
+                    'prob': line[5],
+                    'deaths': line[6],
+                    'total': line[7],
+                    'today': line[8],
+                    'percenttoday': line[9],
+                    'numtested': line[10]
+                    }
+            else:
+                # Represents a province
+                if(line[3] == formatted_date):
+                    data["PROVS"][prov_codes[line[0]]] = {
+                        'conf': line[4],
+                        'prob': line[5],
+                        'deaths': line[6],
+                        'total': line[7],
+                        'today': line[8],
+                        'percenttoday': line[9],
+                        'numtested': line[10],
+                        'daily': data["PROVS"][prov_codes[line[0]]]["daily"]
+                    }
+                data["PROVS"][prov_codes[line[0]]]["daily"][line[3]] = {
+                    'conf': line[4],
+                    'prob': line[5],
+                    'deaths': line[6],
+                    'total': line[7],
+                    'today': line[8],
+                    'percenttoday': line[9],
+                    'numtested': line[10]
+                }   
+        
+        data["lastUpdate"] = formatted_date
+        with open('covid-19.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+
+
+
+if __name__ == '__main__':
+    getDataFromProvinceSpecificSites()
 
